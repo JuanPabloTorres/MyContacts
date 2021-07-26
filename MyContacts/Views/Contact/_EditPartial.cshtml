@@ -1,0 +1,218 @@
+﻿
+
+
+@model MyContacts.ViewModels.ContactViewModel
+
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+
+@*@using (Html.BeginForm("Edit", "Contact", FormMethod.Post, new { id = "editForm" }))*@
+
+@using (Ajax.BeginForm("Edit", "Contact", new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "editForm" }))
+
+{
+    <div id="editModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title">Update Customer  Form</h5>
+                    <button type="button" class="close" style="color:red" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="editForm">
+
+
+
+
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <h4>New User</h4>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                        <div class="form-group">
+
+
+
+
+                            @Html.LabelFor(model => model.ContactId, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.ContactId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.ContactId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @maxlength = "50" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+
+                                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Enter Phone Number", type = "number", maxlength = "10", autocomplete = "off" })
+                                @*@Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @maxlength = "10", @type = "number" } })*@
+                                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Fax, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Fax, new { @class = "form-control", placeholder = "Enter Fax Number", type = "number", maxlength = "10", autocomplete = "off" })
+                                @*@Html.EditorFor(model => model.Fax, new { htmlAttributes = new { @class = "form-control", @maxlength = "10", @type = "number" } })*@
+                                @Html.ValidationMessageFor(model => model.Fax, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @maxlength = "50" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control", @cols = 80, @rows = 30 } })
+                                @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <button type="submit" class="btn btn-primary" id="save">Save</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+                <div class="modal-footer">
+                    @*<button type="submit" class="btn btn-primary">Save changes</button>*@
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@*<div id="editPartial"></div>
+
+
+    @section Scripts {
+
+        @Scripts.Render("~/Scripts/jquery-1.7.1.min.js")
+        @Scripts.Render("~/Scripts/jquery-ui-1.8.20.min.js")
+        @Scripts.Render("~/bundles/jqueryval")
+
+        <script>
+
+
+                $(document).ready(function () {
+
+
+                    $("#editForm").submit(function () {
+                         $("#editModal").modal("hide");
+
+
+                        var contactVm = {
+
+
+
+                            Name: $('#@Html.IdFor(m=>m.Name)').val(),
+                            Phone: $('#@Html.IdFor(m=>m.Phone)').val(),
+                            Email: $('#@Html.IdFor(m=>m.Email)').val(),
+                            Fax: $('#@Html.IdFor(m=>m.Fax)').val(),
+                            Notes: $('#@Html.IdFor(m=>m.Notes)').val()
+
+
+
+                        };
+
+
+                        debugger;
+
+                        $.ajax({
+                            url: 'Contact/Edit',
+                            data: contactVm,
+                            type: 'Post',
+                            dataType: 'html',
+                            contentType: "application/json; charset=utf-8",
+                            success: function (response) {
+                                $("#editPartial").html(response);
+                                $("#editModal").modal("show");
+                            }
+                        });
+                    });
+
+
+                    $("#save").click(function () {
+
+                        $("#editModal").modal("hide");
+
+
+                        var contactVm = {
+
+
+
+                            Name: $('#@Html.IdFor(m=>m.Name)').val(),
+                            Phone: $('#@Html.IdFor(m=>m.Phone)').val(),
+                            Email: $('#@Html.IdFor(m=>m.Email)').val(),
+                            Fax: $('#@Html.IdFor(m=>m.Fax)').val(),
+                            Notes: $('#@Html.IdFor(m=>m.Notes)').val()
+
+
+
+                        };
+
+
+                        debugger;
+
+                        $.ajax({
+                            url: 'Contact/Edit',
+                            data: contactVm,
+                            type: 'Post',
+                            dataType: 'html',
+                            contentType: "application/json; charset=utf-8",
+                            success: function (response) {
+                                $("#editPartial").html(response);
+                                $("#editModal").modal("show");
+                            }
+                        });
+                    });
+
+
+                });
+
+
+
+
+
+        </script>
+    }*@

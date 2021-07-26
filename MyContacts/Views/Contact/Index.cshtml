@@ -1,0 +1,252 @@
+﻿@model IEnumerable<Library.Models.Contact>
+
+@{
+    ViewBag.Title = "Index";
+
+}
+@section Scripts {
+
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    @*<script src="~/Scripts/jquery.unobtrusive.min.js"></script>*@
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+
+
+
+
+
+
+    <script>
+
+
+        $(document).ready(function () {
+
+
+            $(".btnEdit").click(function () {
+
+                $("#editModal").modal("hide");
+
+                var obj = {};
+
+                obj.Id = $(this).attr('data-id');
+
+                var data = {
+
+                    id: obj.Id
+
+                };
+
+
+
+                $.ajax({
+                    url: 'Contact/Edit',
+                    data: data,
+                    type: 'Get',
+                    dataType: 'html',
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        $("#editPartial").html(response);
+                        $("#editModal").modal("show");
+                    }
+                });
+            });
+
+
+        });
+
+
+    </script>
+}
+
+
+
+
+
+
+
+@Html.Partial("_AddNewPartial", new MyContacts.ViewModels.ContactViewModel())
+
+
+
+
+
+
+@using (Html.BeginForm("Search", "Contact", FormMethod.Post))
+{
+
+
+
+    <div class="row" style="margin:20px">
+
+        <div class="col col-sm">
+
+            <table>
+                <tr>
+                    <td>
+                        <label style="margin:0px 10px 0px 0px">Filter:</label>
+                    </td>
+
+                    <td>
+                        <input type="text" name="searchText" class="form-control" placeholder="Search" style="width:300px" />
+                    </td>
+                    <td>
+                        <input type="submit" value="Search" class="btn btn-primary " style="margin-left:20px" />
+                    </td>
+                </tr>
+            </table>
+
+
+        </div>
+
+
+
+
+
+        <div class="col col-sm">
+            <p style="text-align:end;margin:0px 15px 0px 0px">
+
+                <u>
+
+
+
+                    <button type="button" class=" btn-link" data-toggle="modal" data-target="#exampleModal">+ ADD NEW</button>
+
+
+
+
+                </u>
+            </p>
+
+
+
+        </div>
+
+
+    </div>
+
+
+
+}
+
+
+
+
+
+
+
+
+<div class="row" style="margin:10px">
+    <div class="col-lg-1">
+        <h4 style="color:cornflowerblue">Search Result </h4>
+    </div>
+    <div class="col-lg">
+        <hr style="border-top: 1px solid #3399ff;" />
+    </div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<table class="table table-hover ">
+    <tr class="bg-primary">
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fax)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Notes)
+        </th>
+        <th>
+
+            <label>Last Update Date</label>
+            @*@Html.DisplayNameFor(model => model.LastUpdateDate)*@
+        </th>
+        <th>
+            <label>Last Update Username</label>
+            @*@Html.DisplayNameFor(model => model.LastUpdateUserName)*@
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+
+                @Convert.ToInt64(item.Phone).ToString("(###)-###-####")
+                @*@string.Format("{0: (###) ###-####}", item.Phone)*@
+
+
+            </td>
+            <td>
+
+
+                @Convert.ToInt64(item.Fax).ToString("(###)-###-####")
+
+
+                @*@Html.DisplayFor(modelItem => item.Fax)*@
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                <p> @Html.DisplayFor(modelItem => item.Notes)</p>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdateUserName)
+            </td>
+            <td>
+
+                <button type="button" class="btnEdit btn-link " id="btnEdit" data-id="@item.ContactId">  Edit</button>
+                @*<button type="button" class=" btn-link" data-toggle="modal" data-target="#editModal" id="btnEdit" data-id="@item.ContactId">Edit</button>*@
+                @*@Html.ActionLink("Edit", "Edit", new { id = item.ContactId })*@ |
+
+                @Html.ActionLink("Delete", "Delete", new { id = item.ContactId })
+            </td>
+
+
+        </tr>
+
+
+
+
+
+
+
+    }
+
+</table>
+
+
+
+<div id="editPartial"></div>
+
+
+

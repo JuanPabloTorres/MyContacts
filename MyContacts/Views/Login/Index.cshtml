@@ -1,0 +1,182 @@
+﻿@model MyContacts.LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = null;
+    @Styles.Render("~/Content/css")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+
+
+}
+
+@section scripts
+{
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    @*<script src="~/Scripts/jquery.unobtrusive.min.js"></script>*@
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+
+
+
+}
+
+
+
+<style>
+
+
+    .wrapper {
+        text-align: left;
+        background: linear-gradient(to bottom, #22c1c3 0%, #2d57fd 100%);
+        height: 100%;
+        width: 100%;
+        position: relative
+    }
+
+
+    .subWrapper {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+
+    .innerContainer {
+        border: solid 1px #55555b;
+        margin: auto;
+        padding: 20px;
+        width: 300px;
+        border-radius: 5px;
+        height: 320px;
+        background-color: whitesmoke;
+        box-shadow: 5px 10px #55555b;
+    }
+
+
+    .spinnerImg {
+        width: 80px;
+        display: none;
+    }
+</style>
+
+
+@Html.Partial("_RegisterPartial", new MyContacts.ViewModels.ContactViewModel())
+
+
+
+
+
+<div class="wrapper">
+
+
+    <div class="subWrapper">
+
+
+        <div class="innerContainer">
+
+
+
+
+
+
+            @*@using (Html.BeginForm("Index", "Login", FormMethod.Post))*@
+            @using (Ajax.BeginForm("Index", "Login", new AjaxOptions()
+            {
+                HttpMethod = "POST",
+                InsertionMode = InsertionMode.Replace,
+                LoadingElementId = "loadingSpinner",
+
+
+
+
+
+
+            }))
+            {
+
+
+
+
+                <h1 class="text-center">Welcome</h1>
+
+                <hr style="border-top: 1px solid gray;" />
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger " })
+
+                <div class="form-group">
+
+                    <label><b>User Name:</b></label>
+
+                    <input class="form-control" id="Username" name="Username" type="text" value="" style="box-shadow: 2.5px 1.5px lightgrey;" />
+
+                    @*@Html.TextBoxFor(m => m.Username, new { htmlAttributes = new { @class = "form-control", @maxlength = "50" } })*@
+
+                    @Html.ValidationMessageFor(model => model.Username)
+
+
+                </div>
+
+
+                <div class="form-group" id="btnId">
+
+                    <img src="~/Content/Images/Spinner.gif" alt="" style="width:50px;height:50px;display:none" id="loadingSpinner" />
+
+                    <input type="submit" class="shadow-lg p-3 mb-5 bg-white rounded  btn btn-primary btn-block " value="Login" style="box-shadow: 10px 10px 5px lightgrey;" />
+
+
+
+
+                    <button type="button" class=" btn btn-warning btn-block" data-toggle="modal" data-target="#registerModal" style="box-shadow: 10px 10px 5px lightgrey;">Register</button>
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+            }
+
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
