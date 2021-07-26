@@ -15,10 +15,15 @@
 @section scripts
 {
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-    @*<script src="~/Scripts/jquery.unobtrusive.min.js"></script>*@
+    <script src="~/Scripts/jquery.unobtrusive.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+
+
+
 
 
 
@@ -47,6 +52,18 @@
     }
 
 
+    .modalP {
+        position: fixed;
+        z-index: 999;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        background-color: Black;
+        filter: alpha(opacity=60);
+        opacity: 0.6;
+        display: none;
+    }
+
     .innerContainer {
         border: solid 1px #55555b;
         margin: auto;
@@ -62,6 +79,23 @@
     .spinnerImg {
         width: 80px;
         display: none;
+    }
+
+
+    .center {
+        z-index: 1000;
+        margin: 50px auto;
+        padding: 10px;
+        width: 130px;
+        background-color: White;
+        border-radius: 10px;
+        filter: alpha(opacity=100);
+        opacity: 1;
+    }
+
+    .centerimg {
+        height: 128px;
+        width: 128px;
     }
 </style>
 
@@ -90,11 +124,7 @@
             {
                 HttpMethod = "POST",
                 InsertionMode = InsertionMode.Replace,
-                LoadingElementId = "loadingSpinner",
-
-
-
-
+                LoadingElementId = "progress",
 
 
             }))
@@ -125,7 +155,7 @@
 
                 <div class="form-group" id="btnId">
 
-                    <img src="~/Content/Images/Spinner.gif" alt="" style="width:50px;height:50px;display:none" id="loadingSpinner" />
+
 
                     <input type="submit" class="shadow-lg p-3 mb-5 bg-white rounded  btn btn-primary btn-block " value="Login" style="box-shadow: 10px 10px 5px lightgrey;" />
 
@@ -140,23 +170,18 @@
 
 
 
+                <div id="progress" class="modalP">
+                    <div class="center">
 
-
-
-
+                        <img src="~/Content/Images/Spinner.gif" alt="" style="width:100px;height:100px;display:none" id="loadingSpinner" />
+                    </div>
+                </div>
 
             }
 
 
 
-
-
-
-
-
         </div>
-
-
 
 
     </div>
